@@ -42,17 +42,20 @@ def getVideo(id):
 def addVideo(id , length , place , source , title , content_category , universal_video_id , live_status , created_time , description , auto_generated_captions , captions , comments , likes , reactions , sponsor_tags , tags , video_insights):
 	try:	
 		with sqlite3.connect(DATABASE) as con:
+			print("Starting to add video.")
 			query = "INSERT INTO videos (id , length , place , source , title , content_category , universal_video_id , live_status , created_time , description , auto_generated_captions , captions , comments , likes , reactions , sponsor_tags , tags , video_insights) VALUES (? ,? , ? , ?,? ,? , ? , ?,? ,? , ? , ?,? ,? , ? , ?, ?, ?)"
 			cur = con.cursor()
 			cur.execute(query, (id , length , place , source , title , content_category , universal_video_id , live_status , created_time , description , auto_generated_captions , captions , comments , likes , reactions , sponsor_tags , tags , video_insights))
-			cur.commit()
+			print("Starting to add video.")
+			con.commit()
+			print("Starting to add video.")
 			print("Video added.")
 			return True
-	except: 
+	except:
 		con.rollback()
 		return False
 
-addVideo(1 , 2 , "place" , "source" , "title" , "content_category" , 1 , "live_status" , "created_time" , "description" , "auto_generated_captions" , "captions" , "comments" , 1 , "reactions" , "sponsor_tags" , "tags" , "video_insights")
+#addVideo(1 , 2 , "place" , "source" , "title" , "content_category" , 1 , "live_status" , "created_time" , "description" , "auto_generated_captions" , "captions" , "comments" , 1 , "reactions" , "sponsor_tags" , "tags" , "video_insights")
 
 
 
@@ -76,15 +79,15 @@ def index():
 
 @app.route("/videos")
 def videos():
+	template = JINJA_ENVIRONMENT.get_template('templates/index.html')
 	with sqlite3.connect(DATABASE) as con:
 		query = "SELECT * FROM videos;"
 		cur = con.cursor()
 		cur.execute(query)
 		rows = cur.fetchall()
+		#print rows
 		return template.render(rows = rows)
 		
-
-
 
 
 @app.route("/resetdb")
