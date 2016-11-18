@@ -11,7 +11,44 @@
 	<title>News</title>
 </head>
 <body>
+
+
 <h1>News</h1>
+
+
+<table>
+	<thead>
+	<tr>
+		<th>id</th>
+		<th>length</th>
+		<th>place</th>
+		<th>source</th>
+		<th>title </th>
+		<th>content_category</th>
+		<th>universal_video_id</th>
+		<th>live_status</th>
+		<th>created_time</th>
+		<th>description</th>
+		<th>auto_generated_captions</th>
+		<th>captions</th>
+		<th>comments</th>
+		<th>likes</th>
+		<th>reactions</th>
+		<th>sponsor_tags</th>
+		<th>tags</th>
+		<th>video_insights</th>
+	</th>
+	</thead>
+	<tbody>
+	<tr>
+		{% for row in rows%}
+			{% for datum in row%}
+			<td>{{datum}}</td>
+			{%endfor%}
+		{%endfor%}
+	<th>
+	</tbody>
+</table>
 
 </body>
 </html>
