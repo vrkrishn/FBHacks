@@ -1,0 +1,14 @@
+Total Comments: 13321
+0: 619
+1: 592
+2: 577
+3: 563
+4: 551
+
+Positive-Negative:
+Equal for both candidates 3:1 Bad to good
+
+Trump talked about 4 x more than clinton 
+
+Subject detection for identifying candidate
+Vader classifier for sentiment
