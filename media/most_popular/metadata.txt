@@ -1,9 +1,9 @@
 Total Comments: 13321
-0: 619
-1: 592
-2: 577
-3: 563
-4: 551
+0: 286
+1: 283
+2: 267
+3: 260
+4: 253
 
 Positive-Negative:
 Equal for both candidates 3:1 Bad to good
