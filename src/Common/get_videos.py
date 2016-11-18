@@ -70,7 +70,7 @@ def request_video(videoid, access_token):
 		next_time = initial_time + datetime.timedelta(0,30)
 		print next_time
 		print initial_time + datetime.timedelta(0,int(duration))
-		count = len([x for x in comment_data if (x[0] > initial_time and x[0] < next_time)])
+		count = [x[1] for x in comment_data if (x[0] > initial_time and x[0] < next_time)]
 		if not count:
 			counts.append(count)
 			countZeros = 0
@@ -80,7 +80,7 @@ def request_video(videoid, access_token):
 			maxC = count
 
 
-		features['comments'][str(seconds * 30)] = count
+		features['comments'][str(seconds * 30)] = { 'count': len(count), 'comment_data': count }
 		seconds += 1
 		#print next_time
 		initial_time = next_time
