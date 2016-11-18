@@ -15,21 +15,16 @@ import os
 DATABASE = "db/database.db"
 conn = sqlite3.connect(DATABASE)
 print("Opened Database Succesfully")
-# def get_db():
-	# db = getattr(g, "_database", None)
-	# if db is None:
-	# 	db = g._database = sqlite3.connect(DATABASE)
-	# return db
 
 
-
-#need to look at this later
-# @app.teardown_appcontext
-# def close_connection(exception):
-# 	db = getattr(g, "_database", None)
-# 	if db is not None:
-# 		db.close
-
+def getUniqueProperties(prop, table):
+	with sqlite3.connect(DATABASE) as con:
+		query = "SELECT DISTINCT %s from %s ;" %(prop, table)
+		cur = con.cursor()
+		cur.execute(query)
+		rows = cur.fetchall()
+		#print rows
+		return [row[0] for row in rows]
 
 def getVideo(id):
 	with sqlite3.connect(DATABASE) as con:
@@ -55,7 +50,8 @@ def addVideo(id , length , place , source , title , content_category , universal
 		con.rollback()
 		return False
 
-#addVideo(1 , 2 , "place" , "source" , "title" , "content_category" , 1 , "live_status" , "created_time" , "description" , "auto_generated_captions" , "captions" , "comments" , 1 , "reactions" , "sponsor_tags" , "tags" , "video_insights")
+#addVideo(4 , 3 , "test" , "source" , "title" , "content_category" , 1 , "live_status" , "created_time" , "description" , "auto_generated_captions" , "captions" , "comments" , 1 , "reactions" , "sponsor_tags" , "tags" , "video_insights")
+#addVideo(3 , 3 , "test" , "source" , "title" , "test" , 1 , "live_status" , "created_time" , "description" , "auto_generated_captions" , "captions" , "comments" , 1 , "reactions" , "sponsor_tags" , "tags" , "video_insights")
 
 
 
@@ -85,9 +81,38 @@ def videos():
 		cur = con.cursor()
 		cur.execute(query)
 		rows = cur.fetchall()
-		#print rows
 		return template.render(rows = rows)
 		
+
+@app.route("/getPlaces", methods=["POST"])
+def getLocations():
+	template = JINJA_ENVIRONMENT.get_template('templates/index.html')
+	result = getUniqueProperties("place", "videos")
+	return json.dumps(result)
+
+@app.route("/getSubjects", methods=["POST"])
+def getSubjects():
+	template = JINJA_ENVIRONMENT.get_template('templates/index.html')
+	result = getUniqueProperties("content_category", "videos")
+	return json.dumps(result)
+
+# Returns a dictionary of videos sorted by subject
+@app.route("/getVideosByLocation/<place>", methods=["POST"])
+def getVideosByLocation(place):
+	result = {}
+	with sqlite3.connect(DATABASE) as con:
+		query = "SELECT * FROM videos WHERE place = '%s' ORDER BY content_category" %(place)
+		cur = con.cursor()
+		cur.execute(query)
+		rows = cur.fetchall()
+		for row in rows:
+			content_category = row[5]
+			if content_category not in result:
+				result[content_category] = []
+			result[content_category].append(row)
+		return json.dumps(result)
+	
+
 
 
 @app.route("/resetdb")

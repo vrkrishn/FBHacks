@@ -40,13 +40,15 @@
 	</th>
 	</thead>
 	<tbody>
-	<tr>
+	
 		{% for row in rows%}
+		<tr>
 			{% for datum in row%}
 			<td>{{datum}}</td>
 			{%endfor%}
+		</tr>
 		{%endfor%}
-	<th>
+	
 	</tbody>
 </table>
 
